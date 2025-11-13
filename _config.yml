@@ -29,6 +29,9 @@ url: "" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: jekyllrb
 github_username:  jekyll
 
+baseurl: /fullstackwebdev
+url: http://ash-williams.github.io
+
 # Build settings
 remote_theme: just-the-docs/just-the-docs
 #theme: just-the-docs
