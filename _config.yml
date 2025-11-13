@@ -33,10 +33,10 @@ baseurl: /fullstackwebdev
 url: http://ash-williams.github.io
 
 # Build settings
-#remote_theme: just-the-docs/just-the-docs
+remote_theme: just-the-docs/just-the-docs
 #theme: just-the-docs
 #theme: minima
-remote_theme: pages-themes/hacker@v0.2.0
+#remote_theme: pages-themes/hacker@v0.2.0
 plugins:
   - jekyll-feed
   - jekyll-remote-theme # add this line to the plugins list if you already have one
