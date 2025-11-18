@@ -2,6 +2,7 @@
 layout: page
 title: Welcome
 permalink: /welcome/
+nav_order: 1
 ---
 
 # Welcome to Full Stack
@@ -13,6 +14,6 @@ In this unit, we take the fundamentals from first year Web and expand on them to
 
 Let's get started.
 
-<span class="fs-8">
+
+
 [Getting Started](https://ash-williams.github.io/fullstackwebdev/getting-started/){: .btn }
-</span>
