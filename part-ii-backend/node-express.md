@@ -34,7 +34,7 @@ nav_order: 1
 
 8. Now that we have ExpressJS installed, open up the `index.js` file and let’s write some code:  
 
-```js
+```javascript
 // Pull in the express package to use
 const express = require("express"); 
 
@@ -75,7 +75,7 @@ app.listen(port, () => {
 
 10. Now that we have some code, add the following line to the `scripts` section of the `package.json` file. Instructing the application to run our `index.js` file when we run the server: 
 
-```js
+```javascript
 "scripts": {
     "main": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -98,217 +98,246 @@ Yay! We have our first server application working! – But it doesn’t do much�
 
 ## Exercise 2: Adding some functionality 
 
-We want to implement the following API specification: 
+We want to implement the following API specification:
 
-Added complexity: 
+| Method | Route | Description |
+| ------ | ----- | ----------- |
+| GET    | /users | Gets a list of all users |
+| POST | /users | Adds a new user | 
+| PATCH | /users/:id | Updates a user at a specific ID | 
+| DELETE | /users/:id | Deletes a user at a specific ID |
 
-New methods 
+There are some new concepts here that add some complexity:
+- New methods 
+- Handling path parameters (ID’s in the routes) 
+- Handling data (both in the request, and in the response) 
 
-Handling path parameters (ID’s in the routes) 
+### Exercise 2.1: POST /users
 
-Handling data (both in the request, and in the response) 
+1. First we need to create somewhere to store our users – in this case, we can create an array (in later weeks, we will use a database for storing data) 
+2. We can also create the scaffold for the new endpoint (note the new method – ‘post’!) 
 
-### Exercise 2.1: POST /users 
+```javascript
+let users = [];
 
-First we need to create somewhere to store our users – in this case, we can create an array (in later weeks, we will use a database for storing data) 
+app.post("/users", (req, res) => {
 
-We can also create the scaffold for the new endpoint (note the new method – ‘post’!) 
+})
+```
 
- 
+3. To start implementing the endpoint, start by creating the object that we want to add to our array. 
 
- 
+```javascript
+app.post("/users", (req, res) => {
 
- 
+    let user = {
 
- 
+    }
 
- 
+})
+```
 
- 
+4. We can structure the object however we want (or however the specification says that we should). The data being sent is pulled out of the body of the request (stored in req.body). Look at the image below. Note the following:  
+    
+    - We add the object to the array using the JavaScript “push” method 
 
-To start implementing the endpoint, start by creating the object that we want to add to our array. 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
-We can structure the object however we want (or however the specification says that we should). The data being sent is pulled out of the body of the request (stored in req.body). Look at the image below. Note the following:  
-
-We add the object to the array using the JavaScript “push” method 
-
-We have created a “next_id” variable for automatically assigning ID’s to the users 
+    - We have created a “next_id” variable for automatically assigning ID’s to the users 
 
  
+```javascript
+let users = [];
+let next_id = 1;
+
+app.post("/users", (req, res) => {
+    let user = {
+        user_id: next_id,
+        user_name: req.body.name
+    };
+
+    users.push(user);
+    next_id = next_id + 1;
+})
+```
+ 
+5. We need to send some sort of a response to the client so that they know the server is finished processing their request. We do this below by sending the new user object back to the client along with a 201 Created HTTP status. 
+
+ ```javascript
+let users = [];
+let next_id = 1;
+
+app.post("/users", (req, res) => {
+    let user = {
+        user_id: next_id,
+        user_name: req.body.name
+    };
+
+    users.push(user);
+    next_id = next_id + 1;
+
+    return res.status(201).send(user);
+})
+```
+
+6. Finally, we need to tell the server that we are working with JSON data. We can do this easily for the entire application by adding the following line at the top of our file 
+
+```javascript
+const app = express();
+app.use(express.json());
+```
+
+7. Save and restart your server. Test your endpoint by sending a POST request in Postman. Think about: 
+   - What’s the method you need to send? 
+   - What’s the route? 
+   - What data do you need to send?
+   - Does the output match the below image?
+
+![Testing your post request in Postman](../images/intro-to-node-postman.png "Testing the post request in Postman")
+
+**Note: to stop the server running, hit CTRL + C in the terminal window** 
 
  
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
-We need to send some sort of a response to the client so that they know the server is finished processing their request. We do this below by sending the new user object back to the client along with a 201 Created HTTP status. 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
-Finally, we need to tell the server that we are working with JSON data. We can do this easily for the entire application by adding the following line at the top of our file 
-
- 
-
- 
-
- 
-
- 
-
-Save and restart your server. Test your endpoint by sending a POST request in Postman. Think about: 
-
-What’s the method you need to send? 
-
-What’s the route? 
-
-What data do you need to send? 
-
-Note: to stop the server running, hit CTRL + C in the terminal window 
-
- 
-
 ### Exercise 2.2: GET /users 
 
 Now that we can add users, let’s implement the GET endpoint so that we can view all the users in our application. 
 
-Start with the scaffold function as we did in the last exercise. This time the method will be a GET. 
+1. Start with the scaffold function as we did in the last exercise. This time the method will be a GET. 
 
- 
+```javascript
+app.get("/users", (req, res) => {
 
-This one is pretty simple – the array already contains a list of JSON objects in a suitable format, so we can just return it 
+})
+```
 
- 
+2. This one is pretty simple – the array already contains a list of JSON objects in a suitable format, so we can just return it 
 
-Save, restart the server, and test in Postman. 
+ ```javascript
+app.get("/users", (req, res) => {
+    return res.status(200).send(users);
+})
+```
 
-You have just created users when testing the last exercise – so why does this return an empty list? Create some users and test again 
+3. Save, restart the server, and test in Postman. 
+   - You have just created users when testing the last exercise – so why does this return an empty list? Create some users and test again 
 
 ### Exercise 2.3: DELETE /users/:id 
 
 We can add and view our list of users, but what about deleting users? We need to specify a specific record in the array to operate on – we do this with by specifying the ID as a path parameter in the route. 
 
-Start with the endpoint scaffold, only using the delete method. 
+1. Start with the endpoint scaffold, only using the delete method. 
 
+ ```javascript
+ app.delete("/users/:id", (req, res) => {
+
+ })
+ ```
+
+2. We can get the path parameters from `req.params`. The route is a string, so we need to make sure to convert it to an integer with the `parseInt()` function.
+
+ ```javascript
+ app.delete("/users/:id", (req, res) => {
+    let id = parseInt(req.params.id);
+
+ })
+ ```
+
+3.  We can search for a specific user using the JS `find()` function. 
+   
+ ```javascript
+ const user = users.find((temp) => {
+    if(temp.user_id === id){
+        return temp;
+    }
+ })
+ ```
+
+- The `find()` function takes in a function as a parameter. 
+- This will loop through the list of users. If the `user_id` is equal to our path parameter (in the ID variable) then we will return that user and store it in the user variable. 
+- **Note: a triple equals (`===`) in JS means compare the value AND the datatype** 
+- **This function can be written as a one line function instead…**
+
+```javascript
+const user = users.find(temp => temp.user_id === id);
+```
+
+4. If the `find()` function doesn’t find a user with the sought after ID, we need to send a 404 Not Found response. 
+
+```javascript
+const user = users.find(temp => temp.user_id === id);
+if(!user) return res.status(404).send("No user found");
+```
  
 
-We can get the path parameters from req.params. The route is a string, so we need to make sure to convert it to an integer with the parseInt() function. 
+5. If the user is found, we need to find the index of that user in the list. Then we can use the JS `splice()` function to remove it. 
 
- 
+   - **Note: the splice function takes in two parameters. The first is the index of where to start splicing, and the second denotes how many items to remove (in this case, just one)** 
 
-We can search for a specific user using the JS find() function. 
+ ```javascript
+const index = users.indexOf(user);
+users.splice(index, 1);
+```
 
-The find() function takes in a function as a parameter. 
+6. If all has worked, let’s return a 200 response to the client 
 
-This will loop through the list of users. If the user_id is equal to our path parameter (in the ID variable) then we will return that user and store it in the user variable. 
+```javascript
+retrun res.status(200).send("User deleted");
+```
 
-Note: a triple equals (===) in JS means compare the value AND the datatype 
-
-This function can be written as a one line function instead… 
-
- 
-
-If the find() function doesn’t find a user with the sought after ID, we need to send a 404 Not Found response. 
-
- 
-
-If the user is found, we need to find the index of that user in the list. Then we can use the JS splice() function to remove it. 
-
-Note: the splice function takes in two parameters. The first is the index of where to start splicing, and the second denotes how many items to remove (in this case, just one) 
-
- 
-
-If all has worked, let’s return a 200 response to the client 
-
- 
-
-Save, restart, and test. What happens if the same user is deleted twice? 
+7. Save, restart, and test. What happens if the same user is deleted twice? 
 
 ### Exercise 2.4: PATCH /users/:id 
 
 Finally, we need to be able to update a user. You now know enough to do this without much guidance (you’ve already written most of the code) 
 
-Start with the normal endpoint scaffold, only using the PATCH method 
+1. Start with the normal endpoint scaffold, only using the PATCH method 
 
-Get the ID path parameter and return a 404 if it doesn’t exist 
+2. Get the ID path parameter and return a 404 if it doesn’t exist 
 
-If the name in the request body is different to the existing users name, then overwrite it 
+3. If the name in the request body is different to the existing users name, then overwrite it 
 
-Send a 200 message to let the client know that the user has been updated 
+4. Send a 200 message to let the client know that the user has been updated 
 
-Save, restart, and test. 
+5. Save, restart, and test. 
 
 ## Exercise 3: Extend your API 
 
 Create an API endpoint to view a single user. 
 
-What should the method be? 
-
-What should the route be? 
-
-What if we can’t find the user in the list? 
-
-What do we send back to the client? 
+- What should the method be? 
+- What should the route be? 
+- What if we can’t find the user in the list? 
+- What do we send back to the client? 
 
  
-
 ## Exercise 4: ShoppingCartAPI 
 
 Using everything you have learnt, create a new application that adheres to the following API specification: 
 
- 
+| Method | Route | Request | Response | Description |
+| ------ | ----- | ------- | -------- | ----------- |
+| GET    | /cart | -       | [cart_items] | Returns a list of all items in the cart |
+| POST   | /cart | item_name, item_price, quantity | item_id, item_name, item_price, quantity | Adds a new item to the cart |
+| GET | /cart/:id | - | item_id, item_name, item_price, quantity | Get a single item from the cart |
+| PATCH | /cart/:id | quantity | item_id, item_name, item_price, quantity | Updates a single item within the list (users can only update the quantity of items) |
+| DELETE | /cart/:id | - | "<item name> deleted" | Deletes an item from the list |
+
 
 ## Exercise 5: Become a JS master 
 
-Change your ShoppingCartAPI implementation so that when a client sends a GET request to /cart, the responding JSON is in the following formal: 
+Change your ShoppingCartAPI implementation so that when a client sends a GET request to `/cart`, the responding JSON is in the following format: 
+
+```javascript
+
+// number_of_items: calculate the total number of items in the cart
+// total_price: calculate the total price of all items in the cart
+// items: add the list of items here
+
+
+{
+    number_of_items: 74,
+    total_price: 3009.75,
+    items: []
+}
+```
 
  
 
@@ -316,4 +345,4 @@ Change your ShoppingCartAPI implementation so that when a client sends a GET req
 
 Look at the assignment checklist items for this week. Familiarise yourself with the API you will need to implement and get your starter code downloaded and running. Can you run the tests? 
 
-Note: use the assignment specification on Moodle to help you. 
+**Note: use the assignment specification on Moodle to help you.** 
