@@ -318,7 +318,7 @@ Using everything you have learnt, create a new application that adheres to the f
 | POST   | /cart | item_name, item_price, quantity | item_id, item_name, item_price, quantity | Adds a new item to the cart |
 | GET | /cart/:id | - | item_id, item_name, item_price, quantity | Get a single item from the cart |
 | PATCH | /cart/:id | quantity | item_id, item_name, item_price, quantity | Updates a single item within the list (users can only update the quantity of items) |
-| DELETE | /cart/:id | - | "<item name> deleted" | Deletes an item from the list |
+| DELETE | /cart/:id | - | "`item name` deleted" | Deletes an item from the list |
 
 
 ## Exercise 5: Become a JS master 
