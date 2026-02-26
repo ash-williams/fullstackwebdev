@@ -326,12 +326,9 @@ Using everything you have learnt, create a new application that adheres to the f
 Change your ShoppingCartAPI implementation so that when a client sends a GET request to `/cart`, the responding JSON is in the following format: 
 
 ```javascript
-
 // number_of_items: calculate the total number of items in the cart
 // total_price: calculate the total price of all items in the cart
 // items: add the list of items here
-
-
 {
     number_of_items: 74,
     total_price: 3009.75,
