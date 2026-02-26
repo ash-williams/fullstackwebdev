@@ -35,43 +35,64 @@ nav_order: 1
 8. Now that we have ExpressJS installed, open up the `index.js` file and let’s write some code:  
 
 ```js
-code here
+// Pull in the express package to use
+const express = require("express"); 
+
+// Initialise the express app    
+const app = express();      
+
+// Define a port for this app to run on
+const port = 3000;      
+
+// A simple route to check it works!
+app.get("/", (req, res) => {        
+    res.send("Hello World!");
+})
+
+// Make sure the app can be accessed
+app.listen(port, () => {        
+    console.log("App is listening on port: " + port);
+})
 ```
 
 9. It is important that you understand the code here, as it’s the basis for writing all server applications in ExpressJS. 
 
-    - On line 1, we import the ExpressJS library to use in our application 
+    - We begin by importing the ExpressJS library to use in our application 
 
-    - On line 2, we initialise a new ExpressJS application 
+    - We then initialise a new ExpressJS application 
 
-    - On line 4, we set the port that our server will run on 
+    - We set the port that our server will run on 
 
-    - On line 6, we create our first endpoint. The endpoint uses the HTTP GET method and takes in two parameters: 
+    - We create our first endpoint. The endpoint uses the HTTP GET method and takes in two parameters: 
 
         - The first is the route that the client needs to hit. In this case, a GET request to / (i.e., the root path of the server) 
 
         - The second is a function that will trigger when the endpoint is hit by the client. The function takes in two parameters, one with all of the request information (which I’ve called req) and one with all of the response information (which I’ve called res). 
 
-    - On line 7, you can see that when someone triggers the function (by sending a GET request to “/”), the server will simply send the text “Hello World” back to the client (using the response variable). 
+    - Inside our first endpoint, you can see that when someone triggers the function (by sending a GET request to “/”), the server will simply send the text “Hello World” back to the client (using the response variable). 
 
-    - On line 10, we set the server listening for requests. Again this function has two parameters, the first is the port that the application needs to listen on, and the second is a function that triggers once the server is listening and ready for requests. 
+    - Finally, we set the server listening for requests. Again this function has two parameters, the first is the port that the application needs to listen on, and the second is a function that triggers once the server is listening and ready for requests. 
 
 10. Now that we have some code, add the following line to the `scripts` section of the `package.json` file. Instructing the application to run our `index.js` file when we run the server: 
 
 ```js
-code
+"scripts": {
+    "main": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+}
 ```
 
 11. In the terminal, run `npm run main`
 
-**screenshot**
+![Running npm run main in your terminal](../images/intro-to-node-running.png "Running your application in the terminal")
 
-12. Check that your app is working, both in your browser, and in Postman 
 
-**screenshot**
+12.  Check that your app is working, both in your browser, and in Postman 
+
+![Testing your endpoint in the browser](../images/intro-to-node-browser.png "Testing the endpoint in the browser")
  
 
-Yay! First server! – But it doesn’t do much… 
+Yay! We have our first server application working! – But it doesn’t do much… 
 
  
 
